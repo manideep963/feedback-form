@@ -5,14 +5,14 @@ export async function middleware(req) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   const { pathname } = req.nextUrl;
 
-  // Public path (like signin, signup)
-  if (pathname.startsWith("/signin") || pathname.startsWith("/api/auth")) {
+  // Public path (like login, signup)
+  if (pathname.startsWith("/login") || pathname.startsWith("/api/auth")) {
     return NextResponse.next();
   }
 
-  // If no session token → redirect to signin
+  // If no session token → redirect to login
   if (!token) {
-    return NextResponse.redirect(new URL("/signin", req.url));
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
   // Admin-only routes (like /admin or /feedback)
