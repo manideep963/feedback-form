@@ -1,38 +1,16 @@
-"use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { MessageSquare, User, Clock } from "lucide-react";
 
-const AdminFeedbackPage = () => {
-  const [feedbacks, setFeedbacks] = useState([]);
-  const [loading, setLoading] = useState(true);
+async function fetchFeedbacks() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/feedback`, {
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error("Failed to fetch feedbacks");
+  return res.json();
+}
 
-  useEffect(() => {
-    const fetchFeedbacks = async () => {
-      try {
-        const res = await fetch("/api/feedback", { method: "GET" });
-        const data = await res.json();
-        console.log("Fetched feedbacks:", data);
-        setFeedbacks(data);
-      } catch (error) {
-        console.error("Error fetching feedbacks:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchFeedbacks();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading feedback...</p>
-        </div>
-      </div>
-    );
-  }
+export default async function AdminFeedbackPage() {
+  const feedbacks = await fetchFeedbacks();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -106,6 +84,4 @@ const AdminFeedbackPage = () => {
       </div>
     </div>
   );
-};
-
-export default AdminFeedbackPage;
+}
