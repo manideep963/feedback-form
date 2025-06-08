@@ -88,7 +88,7 @@ const DashboardPage = () => {
         )}
 
         
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8">
+        <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg border border-gray-200 p-8">
           <div className="space-y-6">
             
             <div>
@@ -145,7 +145,7 @@ const DashboardPage = () => {
             
             <div className="pt-4">
               <button
-                onClick={handleSubmit}
+                type="submit"
                 disabled={isSubmitting || !formData.feedback.trim()}
                 className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 disabled:cursor-not-allowed"
               >
@@ -163,7 +163,7 @@ const DashboardPage = () => {
               </button>
             </div>
           </div>
-        </div>
+        </form>
 
        
         <div className="text-center mt-8">

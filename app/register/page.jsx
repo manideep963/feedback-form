@@ -9,11 +9,17 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch("/api/register", {
+    setError("");
+    const res = await fetch("/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     });
+    if (!res.ok) {
+      const data = await res.json();
+      setError(data.error || "Registration failed");
+      return;
+    }
     router.push("/login");
   };
 
@@ -21,8 +27,7 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <div className="w-full max-w-sm bg-white rounded-lg shadow p-6">
         <h1 className="text-2xl font-bold text-center mb-6 text-gray-900">Register</h1>
-        
-        <div className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="Name"
@@ -31,7 +36,6 @@ export default function RegisterPage() {
             required
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          
           <input
             type="email"
             placeholder="Email"
@@ -40,7 +44,6 @@ export default function RegisterPage() {
             required
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          
           <input
             type="password"
             placeholder="Password"
@@ -49,7 +52,7 @@ export default function RegisterPage() {
             required
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          
+          {/* Remove this select for production unless you have a secure admin creation process */}
           <select
             value={form.role}
             onChange={(e) => setForm({ ...form, role: e.target.value })}
@@ -58,18 +61,16 @@ export default function RegisterPage() {
             <option value="user">User</option>
             <option value="admin">Admin</option>
           </select>
-          
           {error && (
             <p className="text-red-500 text-sm text-center">{error}</p>
           )}
-          
           <button
-            onClick={handleSubmit}
+            type="submit"
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
           >
             Register
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );
