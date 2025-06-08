@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({ name: "", email: "", password: "", role: "user" });
+  const [error, setError] = useState(""); 
   const router = useRouter();
 
   const handleSubmit = async (e) => {
